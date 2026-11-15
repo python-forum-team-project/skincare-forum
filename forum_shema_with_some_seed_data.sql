@@ -1,3 +1,11 @@
+CREATE DATABASE IF NOT EXISTS forum_system
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE forum_system;
+
+SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+SET default_storage_engine = InnoDB;
 
 CREATE TABLE `roles` (
   role_id        INT NOT NULL AUTO_INCREMENT,
@@ -79,5 +87,5 @@ CREATE TABLE `topic_members` (
   FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
-
-
+INSERT INTO roles (role_name)
+VALUES ('user'), ('admin');
