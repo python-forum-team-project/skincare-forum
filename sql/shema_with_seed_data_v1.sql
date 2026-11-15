@@ -113,22 +113,33 @@ VALUES
 
 INSERT INTO `topics` (topic_id, author_id, title, content, is_private)
 VALUES
-  (1, 2, 'This is the first topic on our forum', 'This is the first content on our skincare themed forum', FALSE),
-  (2, 1, 'This is the second topic here', 'I have nothing interesting to say, I use 9 in 1 shampoo, hair, face, beard, body skincare', FALSE),
-  (3, 3, 'This is the third test topic', 'I am running out of ideas how to fill the content part', FALSE),
-  (4, 4, 'This is for test properties onlt', 'this topic will be deleted and i should fill this remaining space', FALSE),
-  (5, 4, 'Test for the first private topic', 'this is the content of the first private topic content', TRUE);
+  (1, 2, 'Which are the best 2026 advent calendars?', 'Hi guys, please recommend the best advent calendar this year, I want a mix of skincare and makeup with a variety of brands.', FALSE),
+  (2, 1, 'Best LED masks for anti-age?', 'I'm in the market for a new LED mask, I'm 34 with combo skin, currently looking into the DDG one, please share your recommendations.', FALSE),
+  (3, 3, 'Tretinoin side effects', 'I've just started tretinoin, I'm on week 2 but my skin started peeling, is this normal?', FALSE),
+  (4, 4, 'Number one eye cream', 'Hi group, can you please share your number one eye cream, I'm in the market for one that will hide my undereye bags and fine lines.', FALSE),
+  (5, 4, 'European SPF', 'Hi group, I'm going on a trip to Europe in two weeks and I want to get a hold of great SPF I can't get in the States, please give me your best ones!', TRUE);
   
 
 
 INSERT INTO `replies` (reply_id, topic_id, author_id, content)
 VALUES
-  (1, 1, 2, 'This project will be awesome'),
-  (2, 2, 1, 'I do not recommend this type of skincare!!!'),
-  (3, 1, 3, '8192 characters is a lot of content'),
-  (4, 3, 4, 'this content will be deleted'),
-  (5, 5, 3, 'test reply for this content topci thing again and again'),
-  (6, 5, 2, 'I have no idea what to write in this thing for real');
+  (1, 1, 2, 'The SpaceNK one is just as great as previous years!'),
+  (2, 2, 1, 'Quite happy with the Shark one, it was recommended by Caroline Hirons, too.'),
+  (3, 1, 3, 'I got the Harrods one and it's really nice.'),
+  (4, 3, 4, 'How often are you using tret? Did you start with sandwich method?'),
+  (5, 4, 2, 'The AOS one is really good.'),
+  (6, 2, 6, 'I use the Omnilux and am quite happy with the results.'),
+  (7, 2, 3, 'Currently using CurrentBody 2, it's shown tremendous results with my collagen production.),
+  (8, 1, 4, 'Lookfantastic is great value for money, and their beauty chest too.'),
+  (9, 4, 3, 'I don't believe eye cream is necessary, it's just moisturizer for your eyes.'),
+  (10, 1, 5, 'Did you see the SKIMS one? She's having a laugh!'),
+  (11, 3, 3, 'Tretinoin isn't really good for everyone, perhaps you might want to try over-the-counter retinal instead.'),
+  (12, 2, 3, '+ for Shark, been using it since last year.'),
+  (13, 5, 2, 'Have you tried any Korean SPF, they're on par with the European ones.),
+  (14, 5, 1, 'No, European are far superior than Korean and US-based SPF. The Australian are the best ones though.'),
+  (15, 4, 1, 'Quite happy with Autocorrect, it has a pearly finish and giving that instant gratification xxx),
+  (16, 5, 3, 'Of course the best one is LRP Anthelios UVMune 400 but make sure you're getting the European version, it's not the same as in the States.'),
+  (17, 4, 2, 'Really really enjoy the Medik8 Eyelift Peptides.');
   
 
 
