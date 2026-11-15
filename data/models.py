@@ -1,29 +1,6 @@
 from datetime import datetime
-from pydantic import BaseModel, constr, StringConstraints
+from pydantic import BaseModel, StringConstraints
 from typing_extensions import Annotated
-
-
-class Category(BaseModel):
-    id: int | None
-    name: str
-
-
-class Product(BaseModel):
-    id: int | None
-    name: str
-    description: str
-    price: float
-    category_id: int
-
-    @classmethod
-    def from_query_result(cls, id, name, description, price, category_id):
-        return cls(
-            id=id,
-            name=name,
-            description=description,
-            price=price,
-            category_id=category_id)
-
 
 
 class Role:
@@ -79,6 +56,6 @@ class Vote(BaseModel):
     def from_query_result(cls, user_id, reply_id, vote):
         return cls(
             user_id=user_id,
-            reply_id=reply_id
-            vote=vote,
+            reply_id=reply_id,
+            vote=vote
         )
