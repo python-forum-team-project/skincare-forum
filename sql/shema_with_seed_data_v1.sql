@@ -114,10 +114,10 @@ VALUES
 INSERT INTO `topics` (topic_id, author_id, title, content, is_private)
 VALUES
   (1, 2, 'Which are the best 2026 advent calendars?', 'Hi guys, please recommend the best advent calendar this year, I want a mix of skincare and makeup with a variety of brands.', FALSE),
-  (2, 1, 'Best LED masks for anti-age?', 'I'm in the market for a new LED mask, I'm 34 with combo skin, currently looking into the DDG one, please share your recommendations.', FALSE),
-  (3, 3, 'Tretinoin side effects', 'I've just started tretinoin, I'm on week 2 but my skin started peeling, is this normal?', FALSE),
-  (4, 4, 'Number one eye cream', 'Hi group, can you please share your number one eye cream, I'm in the market for one that will hide my undereye bags and fine lines.', FALSE),
-  (5, 4, 'European SPF', 'Hi group, I'm going on a trip to Europe in two weeks and I want to get a hold of great SPF I can't get in the States, please give me your best ones!', TRUE);
+  (2, 1, 'Best LED masks for anti-age?', 'I''m in the market for a new LED mask, I''m 34 with combo skin, currently looking into the DDG one, please share your recommendations.', FALSE),
+  (3, 3, 'Tretinoin side effects', 'I''ve just started tretinoin, I''m on week 2 but my skin started peeling, is this normal?', FALSE),
+  (4, 4, 'Number one eye cream', 'Hi group, can you please share your number one eye cream, I''m in the market for one that will hide my undereye bags and fine lines.', FALSE),
+  (5, 4, 'European SPF', 'Hi group, I''m going on a trip to Europe in two weeks and I want to get a hold of great SPF I can''t get in the States, please give me your best ones!', TRUE);
   
 
 
@@ -125,20 +125,20 @@ INSERT INTO `replies` (reply_id, topic_id, author_id, content)
 VALUES
   (1, 1, 2, 'The SpaceNK one is just as great as previous years!'),
   (2, 2, 1, 'Quite happy with the Shark one, it was recommended by Caroline Hirons, too.'),
-  (3, 1, 3, 'I got the Harrods one and it's really nice.'),
+  (3, 1, 3, 'I got the Harrods one and it''s really nice.'),
   (4, 3, 4, 'How often are you using tret? Did you start with sandwich method?'),
   (5, 4, 2, 'The AOS one is really good.'),
   (6, 2, 6, 'I use the Omnilux and am quite happy with the results.'),
-  (7, 2, 3, 'Currently using CurrentBody 2, it's shown tremendous results with my collagen production.),
+  (7, 2, 3, 'Currently using CurrentBody 2, it''s shown tremendous results with my collagen production.'),
   (8, 1, 4, 'Lookfantastic is great value for money, and their beauty chest too.'),
-  (9, 4, 3, 'I don't believe eye cream is necessary, it's just moisturizer for your eyes.'),
-  (10, 1, 5, 'Did you see the SKIMS one? She's having a laugh!'),
-  (11, 3, 3, 'Tretinoin isn't really good for everyone, perhaps you might want to try over-the-counter retinal instead.'),
+  (9, 4, 3, 'I don''t believe eye cream is necessary, it''s just moisturizer for your eyes.'),
+  (10, 1, 5, 'Did you see the SKIMS one? She''s having a laugh!'),
+  (11, 3, 3, 'Tretinoin isn''t really good for everyone, perhaps you might want to try over-the-counter retinal instead.'),
   (12, 2, 3, '+ for Shark, been using it since last year.'),
-  (13, 5, 2, 'Have you tried any Korean SPF, they're on par with the European ones.),
+  (13, 5, 2, 'Have you tried any Korean SPF, they''re on par with the European ones.'),
   (14, 5, 1, 'No, European are far superior than Korean and US-based SPF. The Australian are the best ones though.'),
-  (15, 4, 1, 'Quite happy with Autocorrect, it has a pearly finish and giving that instant gratification xxx),
-  (16, 5, 3, 'Of course the best one is LRP Anthelios UVMune 400 but make sure you're getting the European version, it's not the same as in the States.'),
+  (15, 4, 1, 'Quite happy with Autocorrect, it has a pearly finish and giving that instant gratification xxx'),
+  (16, 5, 3, 'Of course the best one is LRP Anthelios UVMune 400 but make sure you''re getting the European version, it''s not the same as in the States.'),
   (17, 4, 2, 'Really really enjoy the Medik8 Eyelift Peptides.');
   
 
