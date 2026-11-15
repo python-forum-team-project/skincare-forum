@@ -12,7 +12,7 @@ def _get_connection() -> Connection:
     )
 
 
-def read_query(sql: str, sql_params=()):
+def read_query(sql: str, sql_params=()) -> list[tuple]:
     with _get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(sql, sql_params)
@@ -29,7 +29,7 @@ def insert_query(sql: str, sql_params=()) -> int:
         return cursor.lastrowid
 
 
-def update_query(sql: str, sql_params=()) -> bool:
+def update_query(sql: str, sql_params=()) -> int:
     with _get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(sql, sql_params)
