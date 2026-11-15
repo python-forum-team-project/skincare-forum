@@ -117,7 +117,7 @@ VALUES
   (2, 1, 'Best LED masks for anti-age?', 'I''m in the market for a new LED mask, I''m 34 with combo skin, currently looking into the DDG one, please share your recommendations.', FALSE),
   (3, 3, 'Tretinoin side effects', 'I''ve just started tretinoin, I''m on week 2 but my skin started peeling, is this normal?', FALSE),
   (4, 4, 'Number one eye cream', 'Hi group, can you please share your number one eye cream, I''m in the market for one that will hide my undereye bags and fine lines.', FALSE),
-  (5, 4, 'European SPF', 'Hi group, I''m going on a trip to Europe in two weeks and I want to get a hold of great SPF I can''t get in the States, please give me your best ones!', TRUE);
+  (5, 4, 'European SPF protection', 'Hi group, I''m going on a trip to Europe in two weeks and I want to get a hold of great SPF I can''t get in the States, please give me your best ones!', TRUE);
   
 
 
