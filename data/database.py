@@ -1,14 +1,17 @@
 from mariadb import connect
 from mariadb.connections import Connection
+from os import environ
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def _get_connection() -> Connection:
     return connect(
-        user="root",
-        password="root",
-        host="localhost",
-        port=3306,
-        database="forum",
+        user=environ["DB_USER"],
+        password=environ["DB_PASSWORD"],
+        host=environ.get("DB_HOST", "localhost"),
+        port=int(environ.get("DB_PORT", "3306")),
+        database=environ["DB_NAME"],
     )
 
 
