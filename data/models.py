@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from pydantic import BaseModel, constr, StringConstraints
 from typing_extensions import Annotated
 
@@ -24,27 +24,6 @@ class Product(BaseModel):
             price=price,
             category_id=category_id)
 
-
-class Order(BaseModel):
-    id: int | None
-    product_ids: list[int] = []
-    delivery_date: date
-    delivery_address: str | None
-    user_id: int | None
-
-    @classmethod
-    def from_query_result(cls, id, delivery_date, delivery_address, user_id=None, product_ids=[]):
-        return cls(
-            id=id,
-            delivery_date=delivery_date,
-            delivery_address=delivery_address,
-            user_id=user_id,
-            product_ids=product_ids)
-
-
-class OrderUpdate(BaseModel):
-    delivery_date: date
-    delivery_address: str | None
 
 
 class Role:
@@ -74,10 +53,32 @@ class LoginData(BaseModel):
     password: str
 
 
-class OrderResponse(BaseModel):
-    id: int
-    customer: User
-    products: list[Product]
-    delivery_date: date
-    delivery_address: str | None
-    order_total: float
+
+class Reply(BaseModel):
+    reply_id: int
+    topic_id: int
+    author_id: int
+    content: str
+    created_at: datetime
+    
+    @classmethod
+    def from_query_result(cls, reply_id, topic_id, author_id, content, created_at):
+        return cls(
+            reply_id=reply_id,
+            topic_id=topic_id,
+            author_id=author_id,
+            content=content,
+            created_at=created_at)
+        
+class Vote(BaseModel):
+    user_id: int
+    reply_id: int
+    vote: int
+    
+    @classmethod
+    def from_query_result(cls, user_id, reply_id, vote):
+        return cls(
+            user_id=user_id,
+            reply_id=reply_id
+            vote=vote,
+        )
