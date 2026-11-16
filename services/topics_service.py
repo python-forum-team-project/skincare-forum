@@ -1,4 +1,5 @@
-from data.models import Topic, TopicCreate, TopicUpdate, FakeUser
+from data.models.topics import TopicResponse, FakeUser
+from data.models.reply import Reply
 from data.database import read_query, insert_query, update_query
 
 
@@ -13,12 +14,27 @@ def get_topic_by_id(id: int):
         u.username AS `author`,
         t.title,
         t.content,
-        t.created_at,
-        t.is_private,
-        t.is_locked
+        t.created_at
     FROM topics AS t
-    JOIN users As u ON t.author_id = u.user_id
-    WHERE topic_id = ?
+    JOIN users AS u ON t.author_id = u.user_id
+    WHERE t.topic_id = ?
     ''', (id,))
 
-    return topic
+    if not topic:
+        return None
+
+    topic_replies = read_query('''
+    SELECT 
+        r.reply_id, 
+        r.topic_id, 
+        r.author_id,
+        r.content,
+        r.created_at
+    FROM replies AS r
+    WHERE r.topic_id = ?
+    ORDER BY r.created_at
+    ''', (id,)) #после ще променим author_id на username
+
+    all_topic_replies = [Reply.from_query_result(*row) for row in topic_replies]
+
+    return TopicResponse.from_query_results(*topic[0], replies=all_topic_replies)
