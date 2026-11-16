@@ -100,15 +100,15 @@ VALUES
 
 INSERT INTO `users` (user_id, first_name, last_name, email, username, password_hash, role_id, is_blocked)
 VALUES 
-  (1, 'Aleksandar', 'Shunev', 'shunev@example.com', 'a7shunev', 'pretend it is a hash', 1, FALSE),
-  (2, 'Sophia', 'Sotirova', 'skincare_master@example.com', 'sophia_92820', 'pretend it is a hash', 1, FALSE),
-  (3, 'Stoyan', 'Mezinov', 'mezinov@example.com', 's.mezinov', 'pretend it is a hash', 1, FALSE),
-  (4, 'Tsvetozar', 'Cherkezov', 'zarko@example.com', 'zarko123', 'pretend it is a hash', 2, FALSE),
-  (5, 'Nora',  'Andonova',  'nora_a@example.com',  'nora',  'pretend it is a hash', 2, FALSE),
-  (6, 'Petar',  'Georgiev', 'petar@example.com',  'petar_g',   'pretend it is a hash', 2, FALSE),
-  (7, 'Konstantin',  'Valchanov',   'koko@example.com',  'koko',   'pretend it is a hash', 2, FALSE),
-  (8, 'Spam',   'Bot',      'spam@example.com',   'spammer',   'pretend it is a hash', 2, TRUE),
-  (9, 'Nikola', 'Petrov',   'nikola@example.com', 'nikola_mod','pretend it is a hash', 3, FALSE);
+  (1, 'Aleksandar', 'Shunev', 'shunev@example.com', 'a7shunev', '$argon2id$v=19$m=65536,t=3,p=4$m7FPQ/feiQnY4fIU0oyRbg$P6gG1dgGZt91ujMF4yvU/D609UplHGT7qe5gdbzsle4', 1, FALSE),
+  (2, 'Sophia', 'Sotirova', 'skincare_master@example.com', 'sophia_92820', '$argon2id$v=19$m=65536,t=3,p=4$q6FvQ6xtZIm7dOaovTCkUg$VtxD7MVpGXKJpMH4oHMW/fLRvyGybIkbRqguPJt2ICg', 1, FALSE),
+  (3, 'Stoyan', 'Mezinov', 'mezinov@example.com', 's.mezinov', '$argon2id$v=19$m=65536,t=3,p=4$4JtJZcUDVI6CKDC7NrxtQw$MHhOdqeeUpJ2D58z9cLVrg3I9Qj3NhsIe+1ssRtndrI', 1, FALSE),
+  (4, 'Tsvetozar', 'Cherkezov', 'zarko@example.com', 'zarko123', '$argon2id$v=19$m=65536,t=3,p=4$aqSewMTT+FaJQB+2pTrmUA$HMU7PgkKI8EMZPSGbYpaaScyxRj0A2/mbO4xqIaPKxg', 2, FALSE),
+  (5, 'Nora',  'Andonova',  'nora_a@example.com',  'nora',  '$argon2id$v=19$m=65536,t=3,p=4$kZ2S2fDsXupG3A3rBSCfgA$FUOCyGo25Te+/3imIUw8DU8ENS3AmGkZnuTwQ7laMeo', 2, FALSE),
+  (6, 'Petar',  'Georgiev', 'petar@example.com',  'petar_g',   '$argon2id$v=19$m=65536,t=3,p=4$jmO7KiSO53wdikRLGSBK6g$cKmkK4dPc6JtA1QcxaDG5f5y7moolrs5Z4AE5VoT840', 2, FALSE),
+  (7, 'Konstantin',  'Valchanov',   'koko@example.com',  'koko',   '$argon2id$v=19$m=65536,t=3,p=4$VQBLjuOiWGlpe7WAr+dKyw$npRKYH6Xnu+GNxaBzCR1WNlTz/Ipfpoxw2uvokf8LGk', 2, FALSE),
+  (8, 'Spam',   'Bot',      'spam@example.com',   'spammer',   '$argon2id$v=19$m=65536,t=3,p=4$ymdX/r1cg26DxoYBtRThbw$Fw74oei8I5DvZhaqLJbUOHhz0z6Z1Xn0P9K72HzFpfQ', 2, TRUE),
+  (9, 'Nikola', 'Petrov',   'nikola@example.com', 'nikola_mod','$argon2id$v=19$m=65536,t=3,p=4$5/RNCkJJneTm2Tfwa69aYw$er0n2zVC+Gs1WX30ueHY9h8f4sO8mrX8IBogE2Qj6dY', 3, FALSE);
 
 
 INSERT INTO `topics` (topic_id, author_id, title, content, is_private)
