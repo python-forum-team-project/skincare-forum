@@ -7,11 +7,11 @@ class Role:
     ADMIN = 'admin'
     MODERATOR = 'moderator'
 
-annUsername = Annotated[str,StringConstraints(min_length=2,max_length=16,pattern=r'^\w+$')]
+USERNAME = Annotated[str,StringConstraints(min_length=2, max_length=16)]
 
 class User(BaseModel):
     user_id: int
-    username: annUsername
+    username: USERNAME
     role_name: str
     is_blocked: bool
 
@@ -32,7 +32,7 @@ class UserCreate(BaseModel):
     first_name: str = Field(min_length=2, max_length=32)
     last_name: str = Field(min_length=2, max_length=32)
     email: EmailStr
-    username: annUsername
+    username: USERNAME
     password: str = Field(min_length=8)
 
 
@@ -61,7 +61,7 @@ class UserUpdate(BaseModel):
 
 
 class LoginData(BaseModel):
-    username: annUsername
+    username: USERNAME
     password: str
 
 
