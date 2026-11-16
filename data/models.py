@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, StringConstraints
+from pydantic import BaseModel, StringConstraints, Field
 from typing_extensions import Annotated
 
 
@@ -23,6 +23,16 @@ class User(BaseModel):
             username=username,
             password=password,
             role=role)
+
+
+# Това е само докато се направи изтински юзър и автентикация / оторизация
+# Ползва се от Topics
+class FakeUser(BaseModel): 
+    user_id: int
+    username: str
+    role: str
+    is_blocked: bool = False
+
 
 
 class LoginData(BaseModel):
@@ -59,3 +69,27 @@ class Vote(BaseModel):
             reply_id=reply_id,
             vote=vote
         )
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+
+class Topic(BaseModel):
+    author: str
+    title: str
+    content: str
+    replies: str
+
+
+class TopicCreate(BaseModel):
+    author_id: int
+    title: str = Field(min_length=16, max_length=128)
+    content: str = Field(min_length=32, max_length=8192)
+    is_private: bool = False
+
+
+class TopicUpdate(BaseModel):
+    title: str = Field(min_length=16, max_length=128)
+    content: str = Field(min_length=32, max_length=8192)
+    is_private: bool = False
