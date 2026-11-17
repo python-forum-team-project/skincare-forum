@@ -55,9 +55,9 @@ class UserProfile(User):
 
 
 class UserUpdate(BaseModel):
-    first_name: str = Field(min_length=2, max_length=32)
-    last_name: str = Field(min_length=2, max_length=32)
-    email: EmailStr
+    first_name: str | None = Field(default=None, min_length=2, max_length=32)
+    last_name: str | None = Field(default=None, min_length=2, max_length=32)
+    email: EmailStr | None = None
 
 
 class LoginData(BaseModel):

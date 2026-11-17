@@ -38,3 +38,9 @@ def get_topic_by_id(id: int):
     all_topic_replies = [Reply.from_query_result(*row) for row in topic_replies]
 
     return TopicResponse.from_query_results(*topic[0], replies=all_topic_replies)
+
+
+def get_topics_count() -> int:
+    result = read_query("SELECT COUNT(*) FROM topics")
+
+    return result[0][0]
