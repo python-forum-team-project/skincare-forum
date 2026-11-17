@@ -1,28 +1,39 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from data.models.reply import Reply
 
 
 class Topic(BaseModel):
-    id: int
-    author: str
+    topic_id: int
+    author_id: int
     title: str
     content: str
-    replies: list[Reply] = []
+    is_private: bool
+    is_locked: bool
 
+    @classmethod
+    def from_query_result(cls, topic_id, author_id, title, content, is_private, is_locked):
+        return cls(
+            topic_id=topic_id,
+            author_id=author_id,
+            title=title,
+            content=content,
+            is_private=is_private,
+            is_locked=is_locked
+        )
 
-
-class TopicCreate(BaseModel):
-    author_id: int
-    title: str = Field(min_length=16, max_length=128)
-    content: str = Field(min_length=32, max_length=8192)
-    is_private: bool = False
 
 
 class TopicUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
     title: str = Field(min_length=16, max_length=128)
     content: str = Field(min_length=32, max_length=8192)
+
+
+class TopicCreate(TopicUpdate):
     is_private: bool = False
+
 
 
 class TopicResponse(BaseModel):
