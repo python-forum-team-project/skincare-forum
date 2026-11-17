@@ -26,10 +26,9 @@ def get_current_user(credentials: HTTPAuthorizationCredentials | None = Depends(
     if credentials is None:
         raise HTTPException(401, "Not authenticated")
 
-    user_id = get_user_id_from_token(credentials.credentials)
-    user = get_user_by_id(user_id) if user_id is not None else None
+    user = resolve_user(credentials.credentials)
 
-    if user is None or user.is_blocked:
+    if user is None:
         raise HTTPException(401, "Not authenticated")
 
     return user

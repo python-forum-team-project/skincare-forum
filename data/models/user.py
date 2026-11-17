@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr, StringConstraints
+from pydantic import BaseModel, Field, EmailStr, StringConstraints, ConfigDict, field_validator
 from typing import Literal, Annotated
 
 
@@ -29,11 +29,20 @@ class User(BaseModel):
 
 
 class UserCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     first_name: str = Field(min_length=2, max_length=32)
     last_name: str = Field(min_length=2, max_length=32)
     email: EmailStr
     username: USERNAME
-    password: str = Field(min_length=8)
+    password: str = Field(min_length=8, max_length=128)
+
+    @field_validator("first_name", "last_name", "username", mode="before")
+    @classmethod
+    def strip_spaces(cls, value):
+        if isinstance(value, str):
+            return value.strip()
+        return value
 
 
 class UserProfile(User):
@@ -55,14 +64,29 @@ class UserProfile(User):
 
 
 class UserUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     first_name: str | None = Field(default=None, min_length=2, max_length=32)
     last_name: str | None = Field(default=None, min_length=2, max_length=32)
     email: EmailStr | None = None
 
+    @field_validator("first_name", "last_name", mode="before")
+    @classmethod
+    def strip_spaces(cls, value):
+        if isinstance(value, str):
+            return value.strip()
+        return value
 
 class LoginData(BaseModel):
     username: USERNAME
     password: str
+
+    @field_validator("username", mode="before")
+    @classmethod
+    def strip_spaces(cls, value):
+        if isinstance(value, str):
+            return value.strip()
+        return value
 
 
 class BlockUpdate(BaseModel):
