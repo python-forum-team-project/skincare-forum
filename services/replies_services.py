@@ -1,5 +1,5 @@
 from data.database import read_query
-from data.models import Reply
+from data.models.reply import Reply
 
 # get_by_id(reply_id)	One reply, or None if it doesn’t exist
 # create(reply)	Adds a reply and returns it with its new id
