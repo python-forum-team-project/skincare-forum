@@ -23,6 +23,7 @@ def resolve_user(token: str | None) -> User | None:
     return user
 
 def get_current_user(credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme)) -> User:
+    print('credentials:', credentials)
     if credentials is None:
         raise HTTPException(401, "Not authenticated")
 

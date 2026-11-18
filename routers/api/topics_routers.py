@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from services import topics_service
-from data.models.topics import TopicCreate, FakeUser, TopicUpdate
+from data.models.topics import TopicCreate, TopicUpdate
 from data.models.user import User
-from common import errors
+from common import errors, auth
 
 topics_router = APIRouter(prefix='/topics', tags=['Topics'])
 
 
-@topics_router.get('/{id}')
+@topics_router.get('/{topic_id}')
 def get_topic_by_id(id: int):
     topic = topics_service.get_topic_by_id(id)
 
@@ -18,7 +18,7 @@ def get_topic_by_id(id: int):
 
 
 @topics_router.post('', status_code=status.HTTP_201_CREATED)
-def create_topic(topic: TopicCreate, author: User = Depends(topics_service.get_current_fake_user)): # трябва да се промени когато имаме пълна автентикация на юзъра
+def create_topic(topic: TopicCreate, author: User = Depends(auth.get_current_user)):
     new_topic = topics_service.create_topic(topic, author)
 
     if new_topic is errors.USER_IS_BLOCKED:
@@ -27,8 +27,8 @@ def create_topic(topic: TopicCreate, author: User = Depends(topics_service.get_c
     return new_topic
 
 
-@topics_router.put('/{id}')
-def update_topic(topic_id:int, updated_topic: TopicUpdate, user: User = Depends(topics_service.get_current_fake_user)):
+@topics_router.put('/{topic_id}')
+def update_topic(topic_id:int, updated_topic: TopicUpdate, user: User = Depends(auth.get_current_user)):
     topic_update = topics_service.update_topic(topic_id, updated_topic, user)
 
     if topic_update == errors.TOPIC_NOT_FOUND:
@@ -38,3 +38,14 @@ def update_topic(topic_id:int, updated_topic: TopicUpdate, user: User = Depends(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=('You cannot edit this topic!'))
 
     return topic_update
+
+
+@topics_router.delete('/{topic_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_topic(topic_id: int, user: User = Depends(auth.get_current_user)):
+    result = topics_service.delete_topic(topic_id, user)
+
+    if result == errors.CANNOT_DELETE_TOPIC:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=('You cannot delete this topic!'))
+    
+    if result == errors.TOPIC_NOT_FOUND:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Topic with ID: ({topic_id}) was not found!')

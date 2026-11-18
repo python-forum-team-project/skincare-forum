@@ -53,13 +53,3 @@ class TopicResponse(BaseModel):
                    created_at=created_at, 
                    replies=replies
                    )
-
-
-
-# Това е само докато се направи изтински юзър и автентикация / оторизация
-# Ползва се от Topics
-class FakeUser(BaseModel): 
-    user_id: int
-    username: str
-    role: str
-    is_blocked: bool = False
