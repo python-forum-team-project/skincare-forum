@@ -1,11 +1,11 @@
-from data.models.topics import TopicResponse, FakeUser, TopicCreate, Topic, TopicUpdate
+from data.models.topics import TopicResponse, TopicCreate, Topic, TopicUpdate
 from data.models.user import User
 from data.models.reply import Reply
 from data.database import read_query, insert_query, update_query
 from common import permissions, errors
 
 
-
+#GET
 def get_topic_by_id(id: int):
     topic = read_query('''
     SELECT 
@@ -39,7 +39,7 @@ def get_topic_by_id(id: int):
     return TopicResponse.from_query_results(*topic[0], replies=all_topic_replies)
 
 
-
+#POST
 def create_topic(topic: TopicCreate, author: User):
     if not permissions.can_create_topic(author):
         return errors.USER_IS_BLOCKED
@@ -54,6 +54,7 @@ def create_topic(topic: TopicCreate, author: User):
     return get_topic_by_id(new_topic_id)
 
 
+#PUT
 def update_topic(topic_id: int, updated_topic: TopicUpdate, user: User):
     topic = _get_topic_model(topic_id)
 
@@ -72,6 +73,25 @@ def update_topic(topic_id: int, updated_topic: TopicUpdate, user: User):
     ''', (updated_topic.title, updated_topic.content, topic_id))
 
     return get_topic_by_id(topic_id)
+
+
+#DELETE
+def delete_topic(topic_id: int, user: User):
+     topic = _get_topic_model(topic_id)
+
+     if not topic:
+        return errors.TOPIC_NOT_FOUND
+
+     if not permissions.can_delete_topic(user, topic):
+         return errors.CANNOT_DELETE_TOPIC
+
+     update_query('''
+     DELETE FROM `topics` WHERE topic_id = ?
+     ''', (topic_id,))
+
+
+
+
 
 
 
