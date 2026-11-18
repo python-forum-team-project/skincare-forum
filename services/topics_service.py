@@ -5,13 +5,6 @@ from data.database import read_query, insert_query, update_query
 from common import permissions, errors
 
 
-def get_current_fake_user(): # това е докато се направи Оторизацията и Автентикацията
-    return FakeUser(user_id=8, username='spammer', role='user', is_blocked=True)
-
-# FakeUser(user_id=4, username='zarko123', role='user', is_blocked=False)
-
-
-
 
 def get_topic_by_id(id: int):
     topic = read_query('''
@@ -47,7 +40,7 @@ def get_topic_by_id(id: int):
 
 
 
-def create_topic(topic: TopicCreate, author: User): #FakeUser впоследствие ще се превърне в юзър
+def create_topic(topic: TopicCreate, author: User):
     if not permissions.can_create_topic(author):
         return errors.USER_IS_BLOCKED
 
