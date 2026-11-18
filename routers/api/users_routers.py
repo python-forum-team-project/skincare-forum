@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from data.models.user import User, UserProfile, UserUpdate, UserCreate, BlockUpdate, RoleUpdate, LoginData
-from services.users_service import register, login, get_user_profile, update_user_profile, self_delete_user
+from services.users_service import register, login, get_user_profile, update_user_profile, self_delete_user, admin_search_users, admin_set_blocked, admin_set_role
 from services.auth_service import create_token
-from common.auth import get_current_user
+from common.auth import get_current_user, get_current_admin
 
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
@@ -37,7 +37,7 @@ def login_user(data: LoginData) -> dict:
             'token_type' : 'bearer'}
 
 
-@users_router.get('/me', status_code=200)
+@users_router.get('/me', response_model=UserProfile , status_code=200)
 def my_profile(current_user: User = Depends(get_current_user)) -> UserProfile:
     user = get_user_profile(current_user)
 
@@ -78,3 +78,68 @@ def delete_profile(current_user: User = Depends(get_current_user)) -> None:
             status_code=409,
             detail='Account could not be deactivated'
         )
+
+@users_router.get('', response_model=list[UserProfile])
+def admin_search(search: str, limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), current_user: User = Depends(get_current_admin)) -> list[UserProfile]:
+    result = admin_search_users(current_user, search, limit, offset)
+
+    if result is None:
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
+    return result
+
+
+@users_router.patch('/{user_id}/block', status_code=200)
+def admin_block_user(user_id: int, data: BlockUpdate, current_user: User = Depends(get_current_admin)) -> dict:
+    result = admin_set_blocked(current_user, user_id, data.is_blocked)
+
+    if result[0] == False:
+        if result[1] == 'not_admin':
+            raise HTTPException(
+                status_code=403,
+                detail='Admin access required'
+            )
+        elif result[1] == 'self_change':
+            raise HTTPException(
+                status_code=403,
+                detail='Can not change your status'
+            )
+        elif result[1] == 'not_found':
+            raise HTTPException(
+                status_code=404,
+                detail='User not found'
+            )
+
+    return {"message": "User status updated successfully"}
+
+
+@users_router.patch('/{user_id}/role', status_code=200)
+def admin_change_role(user_id: int, data: RoleUpdate, current_user: User = Depends(get_current_admin)) -> dict:
+    result = admin_set_role(current_user, user_id, data.role_name)
+
+    if result[0] == False:
+        if result[1] == 'not_admin':
+            raise HTTPException(
+                status_code=403,
+                detail='Admin access required'
+            )
+        elif result[1] == 'self_change':
+            raise HTTPException(
+                status_code=403,
+                detail='Can not change your role'
+            )
+        elif result[1] == 'not_found':
+            raise HTTPException(
+                status_code=404,
+                detail='User not found'
+            )
+        elif result[1] == 'invalid_role':
+            raise HTTPException(
+                status_code=422,
+                detail='Invalid role'
+            )
+
+    return {"message": "User role updated successfully"}

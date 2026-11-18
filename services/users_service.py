@@ -130,39 +130,61 @@ def self_delete_user(current_user: User) -> bool:
     return is_deleted
 
 
-def admin_set_blocked(current_user: User, user_id: int, is_blocked: bool) -> bool | None:
+
+def admin_set_blocked(current_user: User, user_id: int, is_blocked: bool) -> tuple[bool, str | None]:
     if not current_user.is_admin():
-        return None
+        return False, "not_admin"
 
     if current_user.user_id == user_id:
-        return False
+        return False, "self_change"
 
-    result = update_query('''UPDATE users SET is_blocked = ? WHERE user_id = ?''',
+    user = get_user_by_id(user_id)
+
+    if user is None:
+        return False, "not_found"
+
+    if user.is_blocked == is_blocked:
+        return True, None
+
+    result = update_query("""UPDATE users SET is_blocked = ? WHERE user_id = ?""",
                           (is_blocked, user_id)
                           )
 
-    is_deleted = result > 0
+    is_updated = result > 0, None if result > 0 else "not_found"
 
-    return is_deleted
+    return is_updated
 
 
-def admin_set_role(current_user: User, user_id: int, role_name: str) -> bool | None:
+
+def admin_set_role(current_user: User, user_id: int, role_name: str) -> tuple[bool, str | None]:
     if not current_user.is_admin():
-        return None
+        return False, "not_admin"
 
     if current_user.user_id == user_id:
-        return False
+        return False, "self_change"
+
+    if role_name not in (Role.USER, Role.ADMIN, Role.MODERATOR):
+        return False, "invalid_role"
+
+    user = get_user_by_id(user_id)
+
+    if user is None:
+        return False, "not_found"
+
+    if user.role_name == role_name:
+        return True, None
 
     result = update_query("""UPDATE users u JOIN roles r ON r.role_name = ? SET u.role_id = r.role_id WHERE u.user_id = ?""",
                           (role_name, user_id)
                           )
 
-    is_updated = result > 0
+    if result == 0:
+        return False, "not_found"
 
-    return is_updated
+    return True, None
 
 
-def admin_search_users(current_user: User, search: str) -> list[UserProfile] | None:
+def admin_search_users(current_user: User, search: str, limit: int, offset: int) -> list[UserProfile] | None:
     if not current_user.is_admin():
         return None
 
@@ -171,8 +193,8 @@ def admin_search_users(current_user: User, search: str) -> list[UserProfile] | N
     results = read_query(
         """SELECT u.user_id, u.username, r.role_name, u.is_blocked, u.first_name, u.last_name, u.email FROM users u
                     JOIN roles r ON u.role_id = r.role_id
-           WHERE u.username LIKE ? OR u.email LIKE ? OR u.first_name LIKE ? OR u.last_name LIKE ?""",
-        (searching_data, searching_data, searching_data, searching_data)
+           WHERE u.username LIKE ? OR u.email LIKE ? OR u.first_name LIKE ? OR u.last_name LIKE ? ORDER BY u.user_id LIMIT ? OFFSET ?""",
+        (searching_data, searching_data, searching_data, searching_data, limit, offset)
     )
 
     users = []
