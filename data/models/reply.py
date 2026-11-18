@@ -4,11 +4,11 @@ from pydantic import BaseModel
 
 
 class Reply(BaseModel):
-    reply_id: int
+    reply_id: int | None = None
     topic_id: int
     author_id: int
     content: str
-    created_at: datetime
+    created_at: datetime | None = None
     
     @classmethod
     def from_query_result(cls, reply_id, topic_id, author_id, content, created_at):
