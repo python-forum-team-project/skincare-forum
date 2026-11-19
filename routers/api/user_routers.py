@@ -5,10 +5,10 @@ from services.auth_service import create_token
 from common.auth import get_current_user, get_current_admin
 
 
-users_router = APIRouter(prefix='/users', tags=['Users'])
+user_router = APIRouter(prefix='/users', tags=['Users'])
 
 
-@users_router.post('', status_code=201)
+@user_router.post('', status_code=201)
 def register_user(new_user: UserCreate) -> dict:
     new_user_id = register(new_user)
 
@@ -21,7 +21,7 @@ def register_user(new_user: UserCreate) -> dict:
     return {'user_id' : new_user_id}
 
 
-@users_router.post('/login', status_code=200)
+@user_router.post('/login', status_code=200)
 def login_user(data: LoginData) -> dict:
     logged_or_not = login(data)
 
@@ -37,7 +37,7 @@ def login_user(data: LoginData) -> dict:
             'token_type' : 'bearer'}
 
 
-@users_router.get('/me', response_model=UserProfile , status_code=200)
+@user_router.get('/me', response_model=UserProfile , status_code=200)
 def my_profile(current_user: User = Depends(get_current_user)) -> UserProfile:
     user = get_user_profile(current_user)
 
@@ -50,7 +50,7 @@ def my_profile(current_user: User = Depends(get_current_user)) -> UserProfile:
     return user
 
 
-@users_router.patch('/me', status_code=200)
+@user_router.patch('/me', status_code=200)
 def update_profile(data: UserUpdate, current_user: User = Depends(get_current_user)) -> dict:
     updated_profile = update_user_profile(current_user, data)
 
@@ -69,7 +69,7 @@ def update_profile(data: UserUpdate, current_user: User = Depends(get_current_us
     return {'message' : 'Profile updated successfully'}
 
 
-@users_router.delete('/me', status_code=204)
+@user_router.delete('/me', status_code=204)
 def delete_profile(current_user: User = Depends(get_current_user)) -> None:
     deleted_or_not = self_delete_user(current_user)
 
@@ -79,7 +79,7 @@ def delete_profile(current_user: User = Depends(get_current_user)) -> None:
             detail='Account could not be deactivated'
         )
 
-@users_router.get('', response_model=list[UserProfile])
+@user_router.get('', response_model=list[UserProfile])
 def admin_search(search: str, limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), current_user: User = Depends(get_current_admin)) -> list[UserProfile]:
     result = admin_search_users(current_user, search, limit, offset)
 
@@ -92,7 +92,7 @@ def admin_search(search: str, limit: int = Query(20, ge=1, le=100), offset: int 
     return result
 
 
-@users_router.patch('/{user_id}/block', status_code=200)
+@user_router.patch('/{user_id}/block', status_code=200)
 def admin_block_user(user_id: int, data: BlockUpdate, current_user: User = Depends(get_current_admin)) -> dict:
     result = admin_set_blocked(current_user, user_id, data.is_blocked)
 
@@ -116,7 +116,7 @@ def admin_block_user(user_id: int, data: BlockUpdate, current_user: User = Depen
     return {"message": "User status updated successfully"}
 
 
-@users_router.patch('/{user_id}/role', status_code=200)
+@user_router.patch('/{user_id}/role', status_code=200)
 def admin_change_role(user_id: int, data: RoleUpdate, current_user: User = Depends(get_current_admin)) -> dict:
     result = admin_set_role(current_user, user_id, data.role_name)
 
