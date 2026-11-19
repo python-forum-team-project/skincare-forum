@@ -1,7 +1,7 @@
 from data.models.user import User
 from services.auth_service import get_user_id_from_token
 from services.users_service import get_user_by_id
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -43,3 +43,7 @@ def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
         )
 
     return current_user
+
+def get_web_current_user(request: Request) -> User | None:
+    token = request.cookies.get('access_token')
+    return resolve_user(token)

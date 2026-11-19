@@ -322,7 +322,10 @@ h1, h2 {
 
 .user-greeting {
     text-align: center;
-    margin: 20px 0;
+    margin: 24px 0;
+}
+.user-greeting a {
+    font-weight: bold;
 }
 
 .main-nav button.nav-item {

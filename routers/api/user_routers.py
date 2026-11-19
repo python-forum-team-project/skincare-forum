@@ -3,6 +3,7 @@ from data.models.user import User, UserProfile, UserUpdate, UserCreate, BlockUpd
 from services.users_service import register, login, get_user_profile, update_user_profile, self_delete_user, admin_search_users, admin_set_blocked, admin_set_role
 from services.auth_service import create_token
 from common.auth import get_current_user, get_current_admin
+from common.errors import EXISTING_USERNAME_OR_EMAIL
 
 
 user_router = APIRouter(prefix='/users', tags=['Users'])
@@ -15,7 +16,7 @@ def register_user(new_user: UserCreate) -> dict:
     if new_user_id is None:
         raise HTTPException(
             status_code=409,
-            detail='Username or email address already exists'
+            detail=EXISTING_USERNAME_OR_EMAIL
         )
 
     return {'user_id' : new_user_id}

@@ -3,16 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/styles.css" type="text/css" rel="stylesheet">
-    {% from 'macros.html' import load_header, load_footer, user_form %}
-    <title>Tech Shop</title>
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+
+    {% from 'macros.html' import load_header, load_footer %}
+    <title>SkinCare® Forum - Register</title>
 </head>
 <body>
-    {{ load_header(get_user(request)) }}
+    {{ load_header(current_user) }}
 
     <h1>Register</h1>
+
     <div class="grid-form-container">
-     {{ user_form('/users/register', 'Register', error) }}
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form action="/register" method="post">
+            <div class="grid-container-lr">
+
+                <fieldset>
+                    <input name="first_name" type="text"
+                           placeholder="First name" minlength="2"
+                           maxlength="32" required>
+                </fieldset>
+
+                <fieldset>
+                    <input name="last_name" type="text"
+                           placeholder="Last name" minlength="2"
+                           maxlength="32" required>
+                </fieldset>
+
+                <fieldset>
+                    <input name="email" type="email"
+                           placeholder="Email" required>
+                </fieldset>
+
+                <fieldset>
+                    <input name="username" type="text"
+                           placeholder="Username" minlength="2"
+                           maxlength="16" required>
+                </fieldset>
+
+                <fieldset>
+                    <input name="password" type="password"
+                           placeholder="Password" minlength="8"
+                           maxlength="128" required>
+                </fieldset>
+
+                <fieldset>
+                    <button type="submit">Register</button>
+                </fieldset>
+
+            </div>
+        </form>
+
     </div>
 
     {{ load_footer() }}

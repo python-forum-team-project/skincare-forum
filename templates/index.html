@@ -3,39 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/styles.css" type="text/css" rel="stylesheet">
-    {% from 'macros.html' import load_header, load_footer %}
-    <title>Tech Shop</title>
-</head>
-<body>
-    {{ load_header(get_user(request)) }}
 
-    <div class="grid-container-index">
-        <a href="">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+
+    {% from 'macros.html' import load_header, load_footer %}
+
+    <title>SkinCare® Forum</title>
+</head>
+
+<body>
+    {{ load_header(current_user) }}
+
+    <main>
+        <h1>Welcome to SkinCare® Forum!</h1>
+        <p>Share your skincare experience with our community.</p>
+
+        <div class="grid-container-index">
+
             <div class="grid-item-index">
-                <h1>On sale!</h1>
-                <img src="../static/images/sale.gif">
+                <h2>Registered Users</h2>
+                <h1>{{ stats.users }}</h1>
             </div>
-        </a>
-        <a href="/products">
+
             <div class="grid-item-index">
-                <h1>All products</h1>
-                <img src="../static/images/products.jpg">
+                <h2>Active Users</h2>
+                <h1>{{ stats.active_users }}</h1>
             </div>
-        </a>
-        <a href="/categories">
+
             <div class="grid-item-index">
-                <h1>All categories</h1>
-                <img src="../static/images/categories.jpg">
+                <h2>Topics</h2>
+                <h1>{{ stats.topics }}</h1>
             </div>
-        </a>
-        <a href="">
+
             <div class="grid-item-index">
-                <h1>Contact us</h1>
-                <img src="../static/images/contact.jpg">
+                <h2>Replies</h2>
+                <h1>{{ stats.replies }}</h1>
             </div>
-        </a>
-    </div>
+
+        </div>
+    </main>
 
     {{ load_footer() }}
 </body>
