@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+
+    {% from 'macros.html' import load_header, load_footer %}
+
+    <title>SkinCare® Forum</title>
+</head>
+
+<body>
+    {{ load_header(current_user) }}
+
+    <main>
+        <h1>Welcome to SkinCare® Forum!</h1>
+        <p>Share your skincare experience with our community.</p>
+
+        <div class="grid-container-index">
+
+            <div class="grid-item-index">
+                <h2>Registered Users</h2>
+                <h1>{{ stats.users }}</h1>
+            </div>
+
+            <div class="grid-item-index">
+                <h2>Active Users</h2>
+                <h1>{{ stats.active_users }}</h1>
+            </div>
+
+            <div class="grid-item-index">
+                <h2>Topics</h2>
+                <h1>{{ stats.topics }}</h1>
+            </div>
+
+            <div class="grid-item-index">
+                <h2>Replies</h2>
+                <h1>{{ stats.replies }}</h1>
+            </div>
+
+        </div>
+    </main>
+
+    {{ load_footer() }}
+</body>
+</html>

@@ -5,8 +5,8 @@ from services.replies_services import get_replies_count
 
 def get_home_stats() -> dict:
     return {
-        'registered users': get_all_users_count(),
-        'active users': get_active_users_count(),
+        'users': get_all_users_count(),
+        'active_users': get_active_users_count(),
         'topics': get_topics_count(),
         'replies': get_replies_count()
     }

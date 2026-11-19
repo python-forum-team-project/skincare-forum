@@ -190,12 +190,11 @@ def admin_search_users(current_user: User, search: str, limit: int, offset: int)
 
     searching_data = f'%{search}%'
 
-    results = read_query(
-        """SELECT u.user_id, u.username, r.role_name, u.is_blocked, u.first_name, u.last_name, u.email FROM users u
+    results = read_query("""SELECT u.user_id, u.username, r.role_name, u.is_blocked, u.first_name, u.last_name, u.email FROM users u
                     JOIN roles r ON u.role_id = r.role_id
            WHERE u.username LIKE ? OR u.email LIKE ? OR u.first_name LIKE ? OR u.last_name LIKE ? ORDER BY u.user_id LIMIT ? OFFSET ?""",
-        (searching_data, searching_data, searching_data, searching_data, limit, offset)
-    )
+                         (searching_data, searching_data, searching_data, searching_data, limit, offset)
+                         )
 
     users = []
     for row in results:

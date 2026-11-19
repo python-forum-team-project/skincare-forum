@@ -1,0 +1,57 @@
+    {% macro load_header(user = None) %}
+    <header>
+        <h2>SkinCare® Forum header</h2>
+
+        <div class="main-nav">
+            <a href="/" class="nav-item">Home</a>
+            {% if user %}
+                <a href="/profile" class="nav-item">Profile</a>
+                <a href="/topics" class="nav-item">Topics</a>
+
+            {% if user.is_admin() %}
+                    <a href="/admin/users" class="nav-item">Admin Panel</a>
+            {% endif %}
+
+                <form action="/logout" method="post">
+                    <button class="nav-item" type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="/login" class="nav-item">Login</a>
+                <a href="/register" class="nav-item">Register</a>
+            {% endif %}
+
+        </div>
+    </header>
+            {% if user %}
+            <p class="user-greeting">
+                Hello <a href="/profile">{{ user.username }}</a>
+            </p>
+            {% endif %}
+    {% endmacro %}
+
+
+    {% macro load_footer() %}
+    <footer>
+        <h2>SkinCare® Forum footer</h2>
+    </footer>
+    {% endmacro %}
+
+{% macro user_form(action, button_text, error=None) %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ action }}" method="post">
+        <div class="grid-container-lr">
+            <fieldset>
+                <input name="username" type="text" placeholder="Username" required>
+            </fieldset>
+            <fieldset>
+                <input name="password" type="password" placeholder="Password" required>
+            </fieldset>
+            <fieldset>
+                <button type="submit">{{ button_text }}</button>
+            </fieldset>
+        </div>
+    </form>
+{% endmacro %}

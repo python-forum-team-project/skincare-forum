@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/styles.css" type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer, user_form %}
+    <title>SkinCare® Forum</title>
+</head>
+<body>
+    {{ load_header(current_user) }}
+
+    <h1>Users</h1>
+    <div class="grid-form-container">
+    {{ user_form('/delete', 'Delete', error) }}
+    </div>
+
+    {{ load_footer() }}
+</body>
+</html>
