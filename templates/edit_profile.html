@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+
+    {% from 'macros.html' import load_header, load_footer %}
+
+    <title>SkinCare® Forum - Edit Profile</title>
+</head>
+<body>
+    {{ load_header(current_user, csrf_token) }}
+
+    <h1>Edit Profile</h1>
+    <p>Update your personal information.</p>
+    <p>Fill in only the fields you want to change.</p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <div class="grid-form-container">
+        <form action="/profile/edit" method="post">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token }}">
+
+            <div class="grid-container-lr">
+
+                <fieldset>
+                  <label for="first_name">First Name</label>
+                  <input type="text"
+                         id="first_name"
+                         name="first_name"
+                         placeholder="{{ profile.first_name }}"
+                         minlength="2"
+                         maxlength="32">
+              </fieldset>
+
+              <fieldset>
+                  <label for="last_name">Last Name</label>
+                  <input type="text"
+                         id="last_name"
+                         name="last_name"
+                         placeholder="{{ profile.last_name }}"
+                         minlength="2"
+                         maxlength="32">
+              </fieldset>
+
+              <fieldset>
+                  <label for="email">Email</label>
+                  <input type="email"
+                         id="email"
+                         name="email"
+                         placeholder="{{ profile.email }}">
+              </fieldset>
+
+                <fieldset>
+                    <button type="submit">Save Changes</button>
+                </fieldset>
+
+            </div>
+        </form>
+    </div>
+
+    <p>
+        <a href="/profile">Back to Profile</a>
+    </p>
+
+    {{ load_footer() }}
+</body>
+</html>

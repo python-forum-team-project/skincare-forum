@@ -337,3 +337,8 @@ h1, h2 {
     font-size: inherit;
     color: inherit;
 }
+
+.success {
+    color: green;
+    font-weight: bold;
+}

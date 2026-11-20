@@ -5,14 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../static/css/styles.css" type="text/css" rel="stylesheet">
     {% from 'macros.html' import load_header, load_footer, user_form %}
-    <title>SkinCare® Forum</title>
+    <title>SkinCare® Forum - Profile</title>
 </head>
 <body>
-    {{ load_header(current_user) }}
+    {{ load_header(current_user, csrf_token) }}
+    {% if message %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
 
-    <h1>Users</h1>
+    <h1>My Profile</h1>
+
+    <p>First Name: {{ profile.first_name }}</p>
+    <p>Last Name: {{ profile.last_name }}</p>
+    <p>Username: {{ profile.username }}</p>
+    <p>Email: {{ profile.email }}</p>
+
+    <p class="user-greeting">
+        <a href="/profile/edit">Edit User</a>
+            </p>
+
+    <h2>Delete Profile</h2>
+    <p>Are you sure you want to delete your account?</p>
+    <p>Please confirm your username and password.</p>
     <div class="grid-form-container">
-    {{ user_form('/delete', 'Delete', error) }}
+    {{ user_form('/profile/delete', 'Delete', error, csrf_token) }}
     </div>
 
     {{ load_footer() }}

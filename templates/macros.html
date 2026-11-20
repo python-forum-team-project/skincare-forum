@@ -1,4 +1,4 @@
-    {% macro load_header(user = None) %}
+    {% macro load_header(user=None, csrf_token=None) %}
     <header>
         <h2>SkinCare® Forum header</h2>
 
@@ -13,7 +13,8 @@
             {% endif %}
 
                 <form action="/logout" method="post">
-                    <button class="nav-item" type="submit">Logout</button>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="nav-item" type="submit">Logout</button>
                 </form>
             {% else %}
                 <a href="/login" class="nav-item">Login</a>
@@ -36,12 +37,13 @@
     </footer>
     {% endmacro %}
 
-{% macro user_form(action, button_text, error=None) %}
+{% macro user_form(action, button_text, error=None, csrf_token=None) %}
     {% if error %}
         <p class="error">{{ error }}</p>
     {% endif %}
 
     <form action="{{ action }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <div class="grid-container-lr">
             <fieldset>
                 <input name="username" type="text" placeholder="Username" required>
