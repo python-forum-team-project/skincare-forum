@@ -6,8 +6,15 @@ from routers.api.user_routers import user_router
 from routers.api.home_routers import home_router
 from routers.web.web_home_routers import web_home_router
 from routers.web.web_user_routers import web_user_router
+from starlette.middleware.sessions import SessionMiddleware
+from os import environ
+from dotenv import load_dotenv
 
+
+load_dotenv()
 app = FastAPI()
+
+app.add_middleware(SessionMiddleware, secret_key=environ["SESSION_SECRET"], same_site="lax", https_only=False)
 
 app.mount('/static', StaticFiles(directory='static'), name='static')
 

@@ -10,7 +10,7 @@
     <title>SkinCare® Forum - Register</title>
 </head>
 <body>
-    {{ load_header(current_user) }}
+    {{ load_header(current_user, csrf_token) }}
 
     <h1>Register</h1>
 
@@ -21,6 +21,7 @@
         {% endif %}
 
         <form action="/register" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div class="grid-container-lr">
 
                 <fieldset>
