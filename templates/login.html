@@ -10,10 +10,13 @@
 <body>
     {{ load_header(current_user, csrf_token) }}
 
-    <h1>Login</h1>
-    <div class="grid-form-container">
-    {{ user_form('/login', 'Login', error, csrf_token) }}
-    </div>
+    <main>
+        <h1>Login</h1>
+        <p class="page-description">Welcome back to our skincare community.</p>
+        <div class="grid-form-container">
+        {{ user_form('/login', 'Login', error, csrf_token) }}
+        </div>
+    </main>
 
     {{ load_footer() }}
 </body>

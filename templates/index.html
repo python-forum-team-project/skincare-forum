@@ -17,28 +17,33 @@
 
     <main>
         <h1>Welcome to SkinCare® Forum!</h1>
-        <p>Share your skincare experience with our community.</p>
+        <p class="page-description">Share your skincare experience with our community.<br>Talk about daily routines, favourite products and caring for your skin.</p>
+
+        <img class="forum-image" src="{{ url_for('static', path='/images/skincare_forum.jpg') }}"
+             alt="SkinCare Forum team project with skincare products and community illustrations">
+
+        <h2>Our community</h2>
 
         <div class="grid-container-index">
 
             <div class="grid-item-index">
                 <h2>Registered Users</h2>
-                <h1>{{ stats.users }}</h1>
+                <p class="stat-number">{{ stats.users }}</p>
             </div>
 
             <div class="grid-item-index">
                 <h2>Active Users</h2>
-                <h1>{{ stats.active_users }}</h1>
+                <p class="stat-number">{{ stats.active_users }}</p>
             </div>
 
             <div class="grid-item-index">
                 <h2>Topics</h2>
-                <h1>{{ stats.topics }}</h1>
+                <p class="stat-number">{{ stats.topics }}</p>
             </div>
 
             <div class="grid-item-index">
                 <h2>Replies</h2>
-                <h1>{{ stats.replies }}</h1>
+                <p class="stat-number">{{ stats.replies }}</p>
             </div>
 
         </div>

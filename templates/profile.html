@@ -9,27 +9,36 @@
 </head>
 <body>
     {{ load_header(current_user, csrf_token) }}
-    {% if message %}
-    <p class="success">{{ message }}</p>
-    {% endif %}
 
-    <h1>My Profile</h1>
+    <main>
+        {% if message %}
+        <p class="success">{{ message }}</p>
+        {% endif %}
 
-    <p>First Name: {{ profile.first_name }}</p>
-    <p>Last Name: {{ profile.last_name }}</p>
-    <p>Username: {{ profile.username }}</p>
-    <p>Email: {{ profile.email }}</p>
+        <h1>My Profile</h1>
 
-    <p class="user-greeting">
-        <a href="/profile/edit">Edit User</a>
-            </p>
+        <div class="profile-details">
+        <p><strong>First Name:</strong> {{ profile.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+        <p><strong>Username:</strong> {{ profile.username }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
 
-    <h2>Delete Profile</h2>
-    <p>Are you sure you want to delete your account?</p>
-    <p>Please confirm your username and password.</p>
-    <div class="grid-form-container">
-    {{ user_form('/profile/delete', 'Delete', error, csrf_token) }}
-    </div>
+        <p class="user-greeting">
+            <a class="button-link" href="/profile/edit">Edit User</a>
+                </p>
+
+        </div>
+
+        <section class="delete-profile">
+        <h2>Delete Profile</h2>
+        <p>Are you sure you want to delete your account?</p>
+        <p>Please confirm your username and password.</p>
+        <div class="grid-form-container">
+        {{ user_form('/profile/delete', 'Delete', error, csrf_token) }}
+        </div>
+
+        </section>
+    </main>
 
     {{ load_footer() }}
 </body>
