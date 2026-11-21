@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/styles.css" type="text/css" rel="stylesheet">
+    <title>SkinCare Forum - Admin Panel</title>
+</head>
+<body>
+    <header>
+        <h2>SkinCare Forum</h2>
+        <p class="header-description">Skincare routines, questions and shared experiences.</p>
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="/" class="nav-item">Home</a>
+            <a href="/profile" class="nav-item">Profile</a>
+            <a href="/topics" class="nav-item">Topics</a>
+            <a href="/admin/users" class="nav-item" aria-current="page">Admin Panel</a>
+        </nav>
+    </header>
+
+    <main class="admin-panel">
+        <h1>Admin Panel</h1>
+        <p class="page-description">Manage forum users, account status and roles.</p>
+
+        <section>
+            <h2>Users</h2>
+
+            <div class="grid-form-container admin-search">
+                <div class="grid-container-lr">
+                    <fieldset>
+                        <label for="search">Search users</label>
+                        <input id="search" name="search" type="search"
+                               placeholder="Name, username or email">
+                    </fieldset>
+                    <button type="button">Search</button>
+                </div>
+            </div>
+
+            <div class="admin-table" role="region" aria-label="Forum users" tabindex="0">
+                <table>
+                    <caption>Example users</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>SkinCare Forum</p>
+        <p>A place to share and learn about skincare.</p>
+    </footer>
+</body>
+</html>

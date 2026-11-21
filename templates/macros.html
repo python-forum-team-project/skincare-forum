@@ -1,6 +1,7 @@
     {% macro load_header(user=None, csrf_token=None) %}
     <header>
-        <h2>SkinCare® Forum header</h2>
+        <h2>SkinCare® Forum</h2>
+        <p class="header-description">Skincare routines, questions and shared experiences.</p>
 
         <div class="main-nav">
             <a href="/" class="nav-item">Home</a>
@@ -33,7 +34,8 @@
 
     {% macro load_footer() %}
     <footer>
-        <h2>SkinCare® Forum footer</h2>
+        <p>SkinCare® Forum</p>
+        <p>A place to share and learn about skincare.</p>
     </footer>
     {% endmacro %}
 
@@ -46,10 +48,12 @@
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <div class="grid-container-lr">
             <fieldset>
-                <input name="username" type="text" placeholder="Username" required>
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" placeholder="Username" required>
             </fieldset>
             <fieldset>
-                <input name="password" type="password" placeholder="Password" required>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="Password" required>
             </fieldset>
             <fieldset>
                 <button type="submit">{{ button_text }}</button>
