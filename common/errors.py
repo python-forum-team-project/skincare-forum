@@ -10,3 +10,4 @@ TOPIC_IS_LOCKED = "This topic is locked"
 CANNOT_EDIT_TOPIC = "You cannot edit this topic"
 CANNOT_DELETE_TOPIC = "You cannot delete this topic"
 EXISTING_USERNAME_OR_EMAIL = 'Username or email already exists'
+CANNOT_LOCK_TOPIC = "Only admins can lock topics"

@@ -1,4 +1,4 @@
-from data.models.topics import TopicResponse, TopicCreate, Topic, TopicUpdate
+from data.models.topics import TopicResponse, TopicCreate, Topic, TopicUpdate, TopicLock
 from data.models.user import User
 from data.models.reply import Reply
 from data.database import read_query, insert_query, update_query
@@ -13,7 +13,8 @@ def get_topic_by_id(id: int):
         u.username AS `author`,
         t.title,
         t.content,
-        t.created_at
+        t.created_at,
+        t.is_locked
     FROM topics AS t
     JOIN users AS u ON t.author_id = u.user_id
     WHERE t.topic_id = ?
@@ -90,6 +91,24 @@ def delete_topic(topic_id: int, user: User):
      ''', (topic_id,))
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+
+def set_topic_lock(topic_id: int, is_locked, user: User):
+    topic = _get_topic_model(topic_id)
+    if not topic:
+        return errors.TOPIC_NOT_FOUND
+
+    if not permissions.can_lock_topic(user):
+        return errors.CANNOT_LOCK_TOPIC
+
+    update_query('''
+    UPDATE topics
+    SET is_locked = ?
+    WHERE topic_id = ?
+    ''', (is_locked, topic_id))
+
+    return get_topic_by_id(topic_id)
 
 
 

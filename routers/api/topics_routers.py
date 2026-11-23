@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from services import topics_service
-from data.models.topics import TopicCreate, TopicUpdate
+from data.models.topics import TopicCreate, TopicUpdate, TopicLock
 from data.models.user import User
 from common import errors, auth
 
@@ -49,3 +49,17 @@ def delete_topic(topic_id: int, user: User = Depends(auth.get_current_user)):
     
     if result == errors.TOPIC_NOT_FOUND:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Topic with ID: ({topic_id}) was not found!')
+
+
+
+@topics_router.put('/{topic_id}/lock')
+def set_topic_lock(topic_id: int, lock: TopicLock, user: User = Depends(auth.get_current_user)):
+    result = topics_service.set_topic_lock(topic_id, lock.is_locked, user)
+
+    if result == errors.TOPIC_NOT_FOUND:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Topic with ID: ({topic_id}) was not found!')
+
+    if result == errors.CANNOT_LOCK_TOPIC:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only admins can lock/unlock topics')
+
+    return result

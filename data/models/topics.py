@@ -42,14 +42,21 @@ class TopicResponse(BaseModel):
     title: str
     content: str
     created_at: datetime
+    is_locked: bool
     replies: list[Reply] = []
 
     @classmethod
-    def from_query_results(cls, id, author, title, content, created_at, replies):
+    def from_query_results(cls, id, author, title, content, created_at,is_locked, replies):
         return cls(id=id, 
                    author=author, 
                    title=title, 
                    content=content,
                    created_at=created_at, 
+                   is_locked=is_locked,
                    replies=replies
                    )
+
+
+
+class TopicLock(BaseModel):
+    is_locked: bool

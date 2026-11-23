@@ -26,3 +26,9 @@ def can_delete_topic(user: User, topic: Topic):
     if user.user_id == topic.author_id:
         return True
     return False
+
+# All functions above are tested in test_permissions.py 
+
+
+def can_lock_topic(user: User):
+    return user.is_admin()
