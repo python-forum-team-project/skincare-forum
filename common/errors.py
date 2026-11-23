@@ -11,3 +11,7 @@ CANNOT_EDIT_TOPIC = "You cannot edit this topic"
 CANNOT_DELETE_TOPIC = "You cannot delete this topic"
 EXISTING_USERNAME_OR_EMAIL = 'Username or email already exists'
 CANNOT_LOCK_TOPIC = "Only admins can lock topics"
+REPLY_NOT_FOUND = "Reply not found"
+CANNOT_EDIT_REPLY = "You cannot edit this reply"
+CANNOT_DELETE_REPLY = "You cannot delete this reply"
+CANNOT_REPLY = "You cannot reply to this topic"
