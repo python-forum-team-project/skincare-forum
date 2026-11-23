@@ -3,42 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/styles.css" type="text/css" rel="stylesheet">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+      type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer %}
     <title>SkinCare Forum - Admin Panel</title>
 </head>
 <body>
-    <header>
-        <h2>SkinCare Forum</h2>
-        <p class="header-description">Skincare routines, questions and shared experiences.</p>
-        <nav class="main-nav" aria-label="Main navigation">
-            <a href="/" class="nav-item">Home</a>
-            <a href="/profile" class="nav-item">Profile</a>
-            <a href="/topics" class="nav-item">Topics</a>
-            <a href="/admin/users" class="nav-item" aria-current="page">Admin Panel</a>
-        </nav>
-    </header>
+    {{ load_header(current_user, csrf_token) }}
 
     <main class="admin-panel">
+        {% if message %}
+            <p class="success">{{ message }}</p>
+        {% endif %}
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
         <h1>Admin Panel</h1>
         <p class="page-description">Manage forum users, account status and roles.</p>
 
         <section>
             <h2>Users</h2>
 
-            <div class="grid-form-container admin-search">
+            <form action="/admin/users" method="get" class="grid-form-container admin-search">
+                <input type="hidden" name="limit" value="{{ limit }}">
                 <div class="grid-container-lr">
                     <fieldset>
                         <label for="search">Search users</label>
-                        <input id="search" name="search" type="search"
+                        <input id="search" name="search" type="search" value="{{ search }}"
                                placeholder="Name, username or email">
                     </fieldset>
-                    <button type="button">Search</button>
+                    <button type="submit">Search</button>
                 </div>
-            </div>
+            </form>
 
             <div class="admin-table" role="region" aria-label="Forum users" tabindex="0">
                 <table>
-                    <caption>Example users</caption>
+                    <caption>Forum users</caption>
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -50,14 +52,65 @@
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {% for user in result %}
+                        <tr>
+                            <td>{{ user.user_id }}</td>
+                            <td>{{ user.first_name }} {{ user.last_name }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role_name }}</td>
+                            <td>{{ 'Blocked' if user.is_blocked else 'Active' }}</td>
+                            <td>
+                                {% if user.user_id != current_user.user_id %}
+                                <form action="/admin/users/{{ user.user_id }}/role" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                    <label for="role-{{ user.user_id }}">Role for {{ user.username }}</label>
+                                    <select id="role-{{ user.user_id }}" name="role_name">
+                                        {% for role in ['user', 'moderator', 'admin'] %}
+                                            {% if role == user.role_name %}
+                                            <option value="{{ role }}" selected>{{ role }}</option>
+                                            {% else %}
+                                            <option value="{{ role }}">{{ role }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="button-link">Save Role</button>
+                                </form>
+                                <form action="/admin/users/{{ user.user_id }}/block" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                    <input type="hidden" name="is_blocked" value="{{ 'false' if user.is_blocked else 'true' }}">
+                                    {% if user.is_blocked %}
+                                    <button type="submit" class="button-link admin-unblock">Unblock</button>
+                                    {% else %}
+                                    <button type="submit" class="button-link admin-block">Block</button>
+                                    {% endif %}
+                                </form>
+                                {% else %}
+                                Your account
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7">No users found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
+
+            <nav class="main-nav" aria-label="User pages">
+                {% if offset > 0 %}
+                <a class="nav-item" href="/admin/users?{{ {'search': search, 'limit': limit, 'offset': offset - limit if offset >= limit else 0} | urlencode }}">Previous</a>
+                {% endif %}
+                {% if result | length == limit %}
+                <a class="nav-item" href="/admin/users?{{ {'search': search, 'limit': limit, 'offset': offset + limit} | urlencode }}">Next</a>
+                {% endif %}
+            </nav>
         </section>
     </main>
 
-    <footer>
-        <p>SkinCare Forum</p>
-        <p>A place to share and learn about skincare.</p>
-    </footer>
+    {{ load_footer() }}
 </body>
 </html>

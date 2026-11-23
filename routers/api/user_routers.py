@@ -142,5 +142,10 @@ def admin_change_role(user_id: int, data: RoleUpdate, current_user: User = Depen
                 status_code=422,
                 detail='Invalid role'
             )
+        elif result[1] == 'invalid_change':
+            raise HTTPException(
+                status_code=403,
+                detail='Can not demote Admin'
+            )
 
     return {"message": "User role updated successfully"}

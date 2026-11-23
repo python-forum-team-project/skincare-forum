@@ -174,6 +174,9 @@ def admin_set_role(current_user: User, user_id: int, role_name: str) -> tuple[bo
     if user.role_name == role_name:
         return True, None
 
+    if user.role_name == Role.ADMIN:
+        return False, 'invalid_change'
+
     result = update_query("""UPDATE users u JOIN roles r ON r.role_name = ? SET u.role_id = r.role_id WHERE u.user_id = ?""",
                           (role_name, user_id)
                           )
