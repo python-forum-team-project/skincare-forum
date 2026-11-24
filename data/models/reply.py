@@ -1,5 +1,6 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Literal
 
 
 
@@ -31,3 +32,16 @@ class Vote(BaseModel):
             reply_id=reply_id,
             vote=vote
         )
+        
+
+
+class ReplyCreate(BaseModel):
+    content: str = Field(min_length=2, max_length=8192)
+
+
+class ReplyUpdate(BaseModel):
+    content: str = Field(min_length=2, max_length=8192)
+
+
+class VoteCreate(BaseModel):
+    vote: Literal[1, -1]

@@ -1,4 +1,4 @@
-from data.database import read_query, insert_query
+from data.database import read_query, insert_query, update_query
 from data.models.reply import Reply
 
 _DATA_REPLY = 'reply_id, topic_id, author_id, content, created_at'
@@ -46,3 +46,38 @@ def create(reply):
 def get_replies_count() -> int:
     result = read_query("SELECT COUNT(*) FROM replies")
     return result[0][0]
+
+def update(reply_id, content):
+    sql = '''
+           UPDATE replies
+           SET content = ?
+           WHERE reply_id = ?
+           '''
+    update_query(sql, (content, reply_id,))
+    return get_by_id(reply_id)
+
+def delete(reply_id):
+    sql = '''
+           DELETE FROM replies
+           WHERE reply_id = ?
+           '''
+    update_query(sql, (reply_id,))
+
+def get_by_author(author_id):
+    sql = f'''
+           SELECT {_DATA_REPLY}
+           FROM replies
+           WHERE user_id = ?
+           ORDER BY created_at DESC
+           '''
+    data = read_query(sql, (author_id,))
+    return [Reply.from_query_result(*row) for row in data]
+
+def belongs_to_topic(reply_id, topic_id):
+    sql = '''
+    SELECT 1
+    FROM replies
+    WHERE reply_id = ? AND topic_id = ?
+           '''
+    data = read_query(sql, (reply_id, topic_id))
+    return any(data)
