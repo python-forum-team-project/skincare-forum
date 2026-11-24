@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer %}
+    <title>SkinCare Forum - {{ topic.title }}</title>
+</head>
+<body>
+    {{ load_header(current_user, csrf_token) }}
+
+    <main>
+        <h1>{{ topic.title }}</h1>
+
+        {% if message %}
+            <p class="success">{{ message }}</p>
+        {% endif %}
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <article class="topic-card">
+            <p class="post-info">By {{ topic.author }} · {{ topic.created_at }}</p>
+            <p class="post-content">{{ topic.content }}</p>
+            {% if topic.is_locked %}
+                <p class="post-status">This topic is locked. New replies and editing are unavailable.</p>
+            {% endif %}
+
+            {% if current_user %}
+            <div class="post-actions">
+                {% if can_edit_topic %}
+                    <a class="button-link" href="/topics/{{ topic.id }}/edit">Edit Topic</a>
+                {% endif %}
+                {% if can_delete_topic %}
+                <form action="/topics/{{ topic.id }}/delete" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="button-link delete-button" type="submit">Delete Topic</button>
+                </form>
+                {% endif %}
+                {% if can_lock_topic %}
+                <form action="/topics/{{ topic.id }}/lock" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    {% if topic.is_locked %}
+                    <input type="hidden" name="is_locked" value="false">
+                    <button class="button-link" type="submit">Unlock Topic</button>
+                    {% else %}
+                    <input type="hidden" name="is_locked" value="true">
+                    <button class="button-link" type="submit">Lock Topic</button>
+                    {% endif %}
+                </form>
+                {% endif %}
+            </div>
+            {% endif %}
+        </article>
+
+        <section class="replies-list" aria-label="Topic replies">
+            <h2>Replies ({{ topic.replies | length }})</h2>
+            {% for reply in topic.replies %}
+            <article class="reply-card" id="reply-{{ reply.reply_id }}">
+                <h3>Reply #{{ reply.reply_id }}</h3>
+                <p class="post-info">User #{{ reply.author_id }} · {{ reply.created_at }}</p>
+                <p class="post-content">{{ reply.content }}</p>
+
+                {% if current_user and not current_user.is_blocked %}
+                <div class="post-actions">
+                    {% if current_user.user_id == reply.author_id and not topic.is_locked %}
+                        <a class="button-link" href="/topics/{{ topic.id }}/replies/{{ reply.reply_id }}/edit">Edit Reply</a>
+                    {% endif %}
+                    {% if current_user.user_id == reply.author_id or current_user.is_admin() %}
+                    <form action="/topics/{{ topic.id }}/replies/{{ reply.reply_id }}/delete" method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="button-link delete-button" type="submit">Delete Reply</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </article>
+            {% else %}
+                <p class="page-description">No replies yet.</p>
+            {% endfor %}
+
+            {% if not topic.is_locked %}
+                {% if current_user %}
+                    {% if not current_user.is_blocked %}
+                    <p class="page-description">
+                        <a class="button-link" href="/topics/{{ topic.id }}/replies/create">Add Reply</a>
+                    </p>
+                    {% else %}
+                        <p class="page-description">Your account is blocked. You cannot add replies.</p>
+                    {% endif %}
+                {% else %}
+                    <p class="page-description"><a href="/login">Log in</a> to add a reply.</p>
+                {% endif %}
+            {% endif %}
+        </section>
+
+        <p class="page-description"><a href="/topics">Back to Topics</a></p>
+    </main>
+
+    {{ load_footer() }}
+</body>
+</html>

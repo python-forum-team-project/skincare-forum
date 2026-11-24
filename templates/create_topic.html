@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer %}
+    <title>SkinCare Forum - Create Topic</title>
+</head>
+<body>
+    {{ load_header(current_user, csrf_token) }}
+
+    <main>
+        <h1>Create Topic</h1>
+        <p class="page-description">Start a discussion with the skincare community.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="grid-form-container post-form">
+            <form action="/topics/create" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="grid-container-lr">
+                    <fieldset>
+                        <label for="title">Title</label>
+                        <input id="title" name="title" type="text" value="{{ title }}"
+                               minlength="16" maxlength="128" required>
+                    </fieldset>
+                    <fieldset>
+                        <label for="content">Content</label>
+                        <textarea id="content" name="content" rows="10"
+                                  minlength="32" maxlength="8192" required>{{ content }}</textarea>
+                    </fieldset>
+                    <fieldset>
+                        <label for="is_private">Visibility</label>
+                        <select id="is_private" name="is_private">
+                            {% if is_private %}
+                            <option value="false">Public</option>
+                            <option value="true" selected>Private</option>
+                            {% else %}
+                            <option value="false" selected>Public</option>
+                            <option value="true">Private</option>
+                            {% endif %}
+                        </select>
+                    </fieldset>
+                    <fieldset>
+                        <button type="submit">Create Topic</button>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+
+        <p class="page-description"><a href="/topics">Back to Topics</a></p>
+    </main>
+
+    {{ load_footer() }}
+</body>
+</html>

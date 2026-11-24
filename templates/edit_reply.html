@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer %}
+    <title>SkinCare Forum - Edit Reply</title>
+</head>
+<body>
+    {{ load_header(current_user, csrf_token) }}
+
+    <main>
+        <h1>Edit Reply</h1>
+        <p class="page-description">Reply to: {{ topic.title }}</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="grid-form-container post-form">
+            <form action="/topics/{{ topic.id }}/replies/{{ reply.reply_id }}/edit" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="grid-container-lr">
+                    <fieldset>
+                        <label for="content">Your Reply</label>
+                        <textarea id="content" name="content" rows="8" required>{{ reply.content }}</textarea>
+                    </fieldset>
+                    <fieldset>
+                        <button type="submit">Save Changes</button>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+
+        <p class="page-description"><a href="/topics/{{ topic.id }}#reply-{{ reply.reply_id }}">Back to Reply</a></p>
+    </main>
+
+    {{ load_footer() }}
+</body>
+</html>

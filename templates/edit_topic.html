@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer %}
+    <title>SkinCare Forum - Edit Topic</title>
+</head>
+<body>
+    {{ load_header(current_user, csrf_token) }}
+
+    <main>
+        <h1>Edit Topic</h1>
+        <p class="page-description">Update the title and content of your topic.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <div class="grid-form-container post-form">
+            <form action="/topics/{{ topic.id }}/edit" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="grid-container-lr">
+                    <fieldset>
+                        <label for="title">Title</label>
+                        <input id="title" name="title" type="text" value="{{ topic.title }}"
+                               minlength="16" maxlength="128" required>
+                    </fieldset>
+                    <fieldset>
+                        <label for="content">Content</label>
+                        <textarea id="content" name="content" rows="10"
+                                  minlength="32" maxlength="8192" required>{{ topic.content }}</textarea>
+                    </fieldset>
+                    <fieldset>
+                        <button type="submit">Save Changes</button>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+
+        <p class="page-description"><a href="/topics/{{ topic.id }}">Back to Topic</a></p>
+    </main>
+
+    {{ load_footer() }}
+</body>
+</html>
