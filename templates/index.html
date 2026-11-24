@@ -47,6 +47,48 @@
             </div>
 
         </div>
+
+        <div class="home-topics-container">
+
+            <section class="recent-topics">
+                <h2>Latest Topics</h2>
+
+                {% for topic in recent_topics %}
+                    <div class="topic-item">
+                        <h3>
+                            <a href="/topics/{{ topic.topic_id }}">
+                                {{ topic.title }}
+                            </a>
+                        </h3>
+
+                        <p>Author: {{ topic.author }}</p>
+                        <p>Created: {{ topic.created_at }}</p>
+                    </div>
+                {% else %}
+                    <p>No topics found.</p>
+                {% endfor %}
+            </section>
+
+            <section class="popular-topics">
+                <h2>Most Discussed Topics</h2>
+
+                {% for topic in popular_topics %}
+                    <div class="topic-item">
+                        <h3>
+                            <a href="/topics/{{ topic.topic_id }}">
+                                {{ topic.title }}
+                            </a>
+                        </h3>
+
+                        <p>Author: {{ topic.author }}</p>
+                        <p>Replies: {{ topic.replies_count }}</p>
+                    </div>
+                {% else %}
+                    <p>No topics found.</p>
+                {% endfor %}
+            </section>
+
+        </div>
     </main>
 
     {{ load_footer() }}

@@ -11,7 +11,7 @@ def get_home_stats() -> dict:
         'topics': get_topics_count(),
         'replies': get_replies_count()
     }
-    
+
 
 def get_recent_topics():
     sql = '''
@@ -51,10 +51,9 @@ def get_topics_by_replies():
             'topic_id': topic_id,
             'title': title,
             'author': username,
-            'created_on': created_at,
+            'created_at': created_at,
             'replies_count': replies_count
         } for topic_id, title, username, created_at, replies_count in data
     ]
-    
-    
-    
+
+
