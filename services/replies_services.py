@@ -67,7 +67,7 @@ def get_by_author(author_id):
     sql = f'''
            SELECT {_DATA_REPLY}
            FROM replies
-           WHERE user_id = ?
+           WHERE author_id = ?
            ORDER BY created_at DESC
            '''
     data = read_query(sql, (author_id,))

@@ -19,7 +19,7 @@ def get_recent_topics():
     FROM topics t
     JOIN users u on u.user_id = t.author_id
     WHERE t.is_private = FALSE
-    ORDER BY t.created_at
+    ORDER BY t.created_at DESC
     LIMIT 10
     '''
     data = read_query(sql)
