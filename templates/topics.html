@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='/css/styles.css') }}"
+          type="text/css" rel="stylesheet">
+    {% from 'macros.html' import load_header, load_footer %}
+    <title>SkinCare Forum - Topics</title>
+</head>
+<body>
+    {{ load_header(current_user, csrf_token) }}
+
+    <main>
+        <h1>Topics</h1>
+        <p class="page-description">Questions, routines and shared skincare experiences.</p>
+
+        {% if message %}
+            <p class="success">{{ message }}</p>
+        {% endif %}
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if current_user %}
+            {% if not current_user.is_blocked %}
+            <p class="page-description">
+                <a class="button-link" href="/topics/create">Create Topic</a>
+            </p>
+            {% endif %}
+        {% else %}
+            <p class="page-description"><a href="/login">Log in</a> to create a topic.</p>
+        {% endif %}
+
+        <section class="topics-list" aria-label="Forum topics">
+            {% for topic in topics %}
+            <article class="topic-card">
+                <h2><a href="/topics/{{ topic.id }}">{{ topic.title }}</a></h2>
+                <p class="post-info">By {{ topic.author }} · {{ topic.created_at }}</p>
+                <p class="post-info">Replies: {{ topic.replies | length }}</p>
+                {% if topic.is_locked %}
+                    <p class="post-status">Locked</p>
+                {% endif %}
+            </article>
+            {% else %}
+                <p class="page-description">No topics found.</p>
+            {% endfor %}
+        </section>
+    </main>
+
+    {{ load_footer() }}
+</body>
+</html>

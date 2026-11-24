@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+mariadb
+python-dotenv
+pwdlib[argon2]
+PyJWT
+email-validator
+Jinja2
+python-multipart
+itsdangerous
