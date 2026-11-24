@@ -34,6 +34,12 @@ def get_current_user(credentials: HTTPAuthorizationCredentials | None = Depends(
 
     return user
 
+def get_viewer(credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme)) -> User | None:
+    if credentials is None:
+        return None
+
+    return resolve_user(credentials.credentials)
+
 def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
 
     if not current_user.is_admin():
