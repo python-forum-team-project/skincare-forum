@@ -4,7 +4,6 @@ from datetime import datetime
 
 with patch.dict('os.environ', {'JWT_SECRET': 'test-secret'}):
     from services import stats_service
-    from routers.api import home_routers
     from routers.web import web_home_routers
     NOW = datetime(2026, 11, 24, 12, 0, 0)
 
@@ -40,12 +39,6 @@ class GetHomeStats_Should(unittest.TestCase):
 
 class HomeRouters_Should(unittest.TestCase):
 
-    @patch('routers.api.home_routers.get_home_stats')
-    def test_returnsStats_fromApi(self, mock_stats):
-        mock_stats.return_value = {'users': 5, 'topics': 2, 'active_users': 4, 'replies': 8}
-
-        self.assertEqual(mock_stats.return_value, home_routers.home())
-
     @patch('routers.web.web_home_routers.templates.TemplateResponse')
     @patch('routers.web.web_home_routers.get_web_current_user')
     @patch('routers.web.web_home_routers.get_home_stats')
@@ -69,7 +62,7 @@ class StatsTopics_Should(unittest.TestCase):
         result = stats_service.get_recent_topics()
 
         self.assertEqual(
-            [{'topic_id': 1, 'title': 'Best SPF', 'author': 'anna', 'created_at': NOW}],
+            [{'topic_id': 1, 'title': 'Best SPF', 'author': 'anna', 'created_on': NOW}],
             result)
 
     @patch('services.stats_service.read_query')

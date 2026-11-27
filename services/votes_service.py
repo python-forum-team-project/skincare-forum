@@ -1,4 +1,4 @@
-from data.database import read_query, insert_query
+from data.database import read_query, insert_query, update_query
 from data.models.reply import Vote
 
 _VOTES_DATA = 'user_id, reply_id, vote'
@@ -33,3 +33,7 @@ def count_votes(reply_id):
     data = read_query(sql, (reply_id,))
     likes, dislikes = data[0]
     return {'likes': int(likes or 0), 'dislikes': int(dislikes or 0)}
+
+def remove_vote(user_id, reply_id):
+    sql = 'DELETE FROM reply_votes WHERE user_id = ? AND reply_id = ?'
+    update_query(sql, (user_id, reply_id))

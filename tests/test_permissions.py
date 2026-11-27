@@ -1,7 +1,8 @@
 import unittest
 from common import permissions
 from data.models.topics import Topic
-from data.models.user import User
+from data.models.user import User, Role
+from data.models.reply import Reply
 
 
 
@@ -14,7 +15,8 @@ def make_topic(topic_id=1, author_id=4, is_locked=False, is_private=False):
                  content='A valid topic content that is at least 32 chars',
                  is_private=is_private, is_locked=is_locked)
 
-
+def make_reply(author_id=4):
+    return Reply(reply_id=1, topic_id=1, author_id=author_id, content='A valid reply')
 
 class CanEditTopic_Should(unittest.TestCase):
 
@@ -148,3 +150,41 @@ class CanDeleteTopic_Should(unittest.TestCase):
         topic = make_topic(author_id=4, is_locked=True)
 
         self.assertTrue(permissions.can_delete_topic(user, topic))
+        
+class CanEditReply_Should(unittest.TestCase):
+
+    def test_returnsTrue_whenUserIsAuthor(self):
+        self.assertTrue(permissions.can_edit_reply(make_user(user_id=4), make_reply(author_id=4)))
+
+    def test_returnsFalse_whenUserIsNotAuthor(self):
+        self.assertFalse(permissions.can_edit_reply(make_user(user_id=5), make_reply(author_id=4)))
+
+    def test_returnsFalse_whenAuthorIsBlocked(self):
+        user = make_user(user_id=4, is_blocked=True)
+
+        self.assertFalse(permissions.can_edit_reply(user, make_reply(author_id=4)))
+
+    def test_returnsFalse_whenAdminIsNotAuthor(self):
+        admin = make_user(user_id=9, role=Role.ADMIN)
+
+        self.assertFalse(permissions.can_edit_reply(admin, make_reply(author_id=4)))
+
+    def test_returnsFalse_whenNoUser(self):
+        self.assertFalse(permissions.can_edit_reply(None, make_reply()))
+
+
+class CanDeleteReply_Should(unittest.TestCase):
+
+    def test_returnsTrue_whenUserIsAuthor(self):
+        self.assertTrue(permissions.can_delete_reply(make_user(user_id=4), make_reply(author_id=4)))
+
+    def test_returnsTrue_whenUserIsAdmin(self):
+        admin = make_user(user_id=9, role=Role.ADMIN)
+
+        self.assertTrue(permissions.can_delete_reply(admin, make_reply(author_id=4)))
+
+    def test_returnsFalse_whenUserIsNotAuthorOrAdmin(self):
+        self.assertFalse(permissions.can_delete_reply(make_user(user_id=5), make_reply(author_id=4)))
+
+    def test_returnsFalse_whenNoUser(self):
+        self.assertFalse(permissions.can_delete_reply(None, make_reply()))

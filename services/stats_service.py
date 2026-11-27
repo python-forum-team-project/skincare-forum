@@ -1,6 +1,6 @@
 from services.users_service import get_all_users_count, get_active_users_count
 from services.topics_service import get_topics_count
-from services.replies_services import get_replies_count
+from services.replies_service import get_replies_count
 from data.database import read_query
 
 

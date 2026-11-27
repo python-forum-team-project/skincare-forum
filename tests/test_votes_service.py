@@ -48,3 +48,11 @@ class VotesService_Should(unittest.TestCase):
         result = votes_service.count_votes(2)
 
         self.assertEqual({'likes': 0, 'dislikes': 0}, result)
+        
+        
+    @patch('services.votes_service.update_query')
+    def test_removeVote_deletesTheVote(self, mock_update):
+        votes_service.remove_vote(1, 2)
+
+        mock_update.assert_called_once()
+        self.assertEqual((1, 2), mock_update.call_args[0][1])
