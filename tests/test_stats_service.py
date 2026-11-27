@@ -5,7 +5,9 @@ from datetime import datetime
 with patch.dict('os.environ', {'JWT_SECRET': 'test-secret'}):
     from services import stats_service
     from routers.web import web_home_routers
-    NOW = datetime(2026, 11, 24, 12, 0, 0)
+
+
+NOW = datetime(2026, 11, 24, 12, 0, 0)
 
 
 @patch('services.stats_service.get_replies_count')
@@ -39,19 +41,32 @@ class GetHomeStats_Should(unittest.TestCase):
 
 class HomeRouters_Should(unittest.TestCase):
 
-    @patch('routers.web.web_home_routers.templates.TemplateResponse')
+    @patch('routers.web.web_home_routers.templates')
     @patch('routers.web.web_home_routers.get_web_current_user')
+    @patch('routers.web.web_home_routers.get_topics_by_replies')
+    @patch('routers.web.web_home_routers.get_recent_topics')
     @patch('routers.web.web_home_routers.get_home_stats')
-    def test_passesStatsAndUser_toHomeTemplate(self, mock_stats, mock_user, mock_template):
+    def test_passesStatsAndTopicsAndUser_toHomeTemplate(self, mock_stats, mock_recent, mock_popular,
+                                                      mock_user, mock_templates):
         request = Mock()
         mock_stats.return_value = {'users': 5, 'topics': 2, 'active_users': 4, 'replies': 8}
+        mock_recent.return_value = [{'topic_id': 1, 'title': 'Best SPF', 'author': 'anna', 'created_at': NOW}]
+        mock_popular.return_value = [{'topic_id': 2, 'title': 'Daily routine', 'author': 'maria',
+                                     'created_at': NOW, 'replies_count': 5}]
         mock_user.return_value = None
 
         result = web_home_routers.index(request)
 
-        self.assertEqual(mock_template.return_value, result)
-        mock_template.assert_called_once_with(request=request, name='index.html',
-                                              context={'stats': mock_stats.return_value, 'current_user': None})
+        self.assertEqual(mock_templates.TemplateResponse.return_value, result)
+        mock_templates.TemplateResponse.assert_called_once_with(
+            request=request, name='index.html',
+            context={'stats': mock_stats.return_value, 'current_user': None,
+                     'recent_topics': mock_recent.return_value, 'popular_topics': mock_popular.return_value})
+        mock_stats.assert_called_once_with()
+        mock_recent.assert_called_once_with()
+        mock_popular.assert_called_once_with()
+        mock_user.assert_called_once_with(request)
+
 
 class StatsTopics_Should(unittest.TestCase):
 
@@ -62,7 +77,7 @@ class StatsTopics_Should(unittest.TestCase):
         result = stats_service.get_recent_topics()
 
         self.assertEqual(
-            [{'topic_id': 1, 'title': 'Best SPF', 'author': 'anna', 'created_on': NOW}],
+            [{'topic_id': 1, 'title': 'Best SPF', 'author': 'anna', 'created_at': NOW}],
             result)
 
     @patch('services.stats_service.read_query')
@@ -79,7 +94,7 @@ class StatsTopics_Should(unittest.TestCase):
 
         self.assertEqual(
             [{'topic_id': 1, 'title': 'Best SPF', 'author': 'anna',
-              'created_on': NOW, 'replies_count': 5}],
+              'created_at': NOW, 'replies_count': 5}],
             result)
 
     @patch('services.stats_service.read_query')
